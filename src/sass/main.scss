@@ -1,0 +1,111 @@
+@import 'feta';
+
+// div {
+// 	outline: 1px solid pink;
+// }
+
+$dem-fill: rgba(0, 78, 137, .5);
+$dem-stroke: rgba(0, 78, 137, 1);
+
+$gop-fill: rgba(186, 47, 14, .5);
+$gop-stroke: rgba(186, 47, 14, 1);
+
+
+#content-main {
+	max-width: 800px;
+	margin: 0 auto;
+}
+
+h2.all-head {
+    font-size: 16px;
+    margin-bottom: 10px;
+    text-align: center;
+    font-family: Gordita,Helvetica,Arial,sans-serif;
+    color: #4a4a4a;
+    font-weight: 500;
+}
+
+p.sub-head {
+	font-family: $mono;
+	font-size: 14px;
+	color: #848484;
+	text-align: center;
+}
+
+
+.well {
+	width: 100%;
+	float: left;
+	margin-top: 24px;
+
+	p {
+		text-align: center;
+		font-family: $mono;
+		font-size: 14px;
+		color: #4a4a4a;
+	}
+}
+
+.chart {
+	
+	width: 80%;
+
+	.st-label {
+		fill: #4a4a4a;
+		font-size: 10px;
+
+	}
+
+	.dot {
+		stroke-width: 1;
+
+		&.dem {
+			//fill: #01356e;
+			fill: $dem-fill;
+			stroke: $dem-stroke;
+			
+		}
+
+		&.gop {
+			//fill: #b1290a;
+			fill: $gop-fill;
+			stroke: $gop-stroke;
+		}
+	}
+
+	.axis {
+
+		text {
+			font-family: $mono;
+		}
+
+		.tick text {
+			fill: #2a2a2a;
+    		font-size: 12px;
+		}
+
+		line, path {
+			stroke: #c2c2c2;
+			stroke-width: 1;
+		}
+
+		.domain {
+			display: none;
+		}
+
+		.label {
+			font-family: $mono;
+			font-size: 13px;
+			fill: #4a4a4a;
+		}
+		            
+	}
+
+	.zero-line {
+		stroke: #4a4a4a;
+		stroke-width: 1;
+	}
+
+
+
+}

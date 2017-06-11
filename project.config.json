@@ -1,0 +1,12 @@
+{
+  "project": {
+    "name": "2017 06 07 healthcare scatterplot",
+    "slug": "2017-06-07-healthcare-scatterplot",
+    "description": ""
+  },
+  "s3": {
+    "bucket": "graphics.axios.com",
+    "folder": "2017-06-07-2017-06-07-healthcare-scatterplot"
+  },
+  "files": []
+}
