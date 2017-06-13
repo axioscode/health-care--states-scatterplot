@@ -14,10 +14,10 @@ var pymChild = null;
 document.addEventListener("DOMContentLoaded", main());
 
 function main() {
-    var pymChild = new pym.Child();
+    
     let statesScatterplot;
 
-    d3.csv(`data/states_data.csv`, (error, data) => {
+    d3.csv(`data/states_data_2013-2015.csv`, (error, data) => {
 
         data.forEach(d=> {
             d.area_fips = pad(d.area_fips, 2);
@@ -57,7 +57,7 @@ function main() {
 
         // var sp = statesScatterplot;
 
-        // let keyVals = [1000000, 5000000, 10000000];
+        // let keyVals = [1000000, 10000000, 30000000];
 
         // let key = d3.select(".key-test")
         //     .append("svg")
@@ -68,14 +68,19 @@ function main() {
         //     .data(keyVals).enter()
         //     .append("circle")
         //     .attr("cx", d=> {
-        //         return sp.circleScale(10000000) + 5;
+        //         return sp.circleScale(d / Math.PI) + 5;
         //     })
         //     .attr("cy", d=> {
-        //         return 90 - sp.circleScale(d);
+        //         return 90 - sp.circleScale(d / Math.PI) + 5;
         //     })
         //     .attr("r", d=> {
-        //         return sp.circleScale(d);
+
+        //         let r = sp.circleScale(d / Math.PI);
+
+        //         return r;
         //     });
+
+        var pymChild = new pym.Child();
 
     });
 

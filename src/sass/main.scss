@@ -1,6 +1,7 @@
 @import 'feta';
-@import '_chosen-custom';
+// @import '_chosen-custom';
 @import '_tooltip';
+@import '_native-select';
 
 // div {
 // 	outline: 1px solid pink;
@@ -40,6 +41,13 @@ p.sub-head {
 	font-size: 14px;
 	color: #848484;
 	text-align: center;
+}
+
+
+.search-container {
+	width: 100%;
+	display: inline-block;
+	margin-top: 15px;
 }
 
 
@@ -173,6 +181,7 @@ p.sub-head {
 	.labels {
 
 		text {
+			font-family: $mono;
 			paint-order: stroke;
 			stroke: white;
 			stroke-width: 4px;

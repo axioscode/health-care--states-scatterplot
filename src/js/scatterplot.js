@@ -14,8 +14,8 @@ class scatterplot {
 
         this.xCat = opts.xCat;
         this.yCat = opts.yCat;
-        this.xDomain = [-.06, .25];
-        this.yDomain = [-.06, .2];
+        this.xDomain = [-.015, .15];
+        this.yDomain = [-.015, .15];
         this.xMax = this.xDomain[1];
         this.yMax = this.yDomain[1];
 
@@ -43,8 +43,8 @@ class scatterplot {
 
         this.mobile = window.innerWidth <= 375 ? true : false;
 
-        this.xDomain = this.mobile ? [-.06, .2] : this.xDomain;
-        this.aspectHeight = this.mobile ? 1 : this.aspectHeight;
+        this.xDomain = this.mobile ? [-.015, .15] : this.xDomain;
+        this.aspectHeight = this.aspectHeight;
 
         this.margin = {
             top: 30,
@@ -70,7 +70,10 @@ class scatterplot {
     _setScales() {
 
 
-        let circleRange = this.breakpoint === "mobile" ? [6, 30] : this.breakpoint === "medium" ? [10, 50] : [10, 80];
+        let circleRange = this.breakpoint === "mobile" ? [6, 40] :
+            this.breakpoint === "medium" ? [5, 50] :
+            [7, 70];
+
         let pctFormat = d3.format(".0%");
 
         // set the ranges
@@ -115,8 +118,6 @@ class scatterplot {
     draw() {
 
         this.element.innerHTML = "";
-
-
 
         d3.select(this.element).classed("scatterplot", true)
             .classed("is-mobile", this.mobile)
@@ -246,8 +247,9 @@ class scatterplot {
 
     drawVoronoi() {
 
+        // let labelList = ["Colorado", "California", "Texas", "Nevada", "Washington", "District of Columbia", "Arkansas", "Maine", "Wisconsin", "Vermont", "Alaska", "Delaware", "Florida", "Utah", "Massachusetts"];
 
-        let labelList = ["Colorado", "California", "Texas", "Nevada", "Washington", "District of Columbia", "Arkansas", "Maine", "Wisconsin", "Vermont", "Alaska", "Delaware"];
+        let labelList = ["Nevada", "California", "Colorado", "Texas", "Florida", "Arizona", "Kentucky", "Massachusetts", "Delaware", "Mississippi", "South Dakota", "Virginia", "Oregon", "West Virginia", "Washington"];
 
         // draw the polygons
         this.voronoiPolygons = this.plot.append('g')
@@ -268,7 +270,7 @@ class scatterplot {
                 return d ? `M${d.join('L')}Z` : ``;
             })
             .on("mouseover", d => {
-                this.setActive(d.data.area_fips);
+                this.setActive(d.data.area_fips, this.mobile);
             })
             .on("mouseout", d => {
                 this.setInactive(d.data.area_fips);
@@ -276,6 +278,7 @@ class scatterplot {
 
 
         let labelSeries = voronoiSeries.filter(d => {
+            //return d;
             return labelList.indexOf(d.data.area_title) > -1;
         });
 
@@ -299,6 +302,8 @@ class scatterplot {
                     angle === 1 ? "bottom" :
                     "left";
 
+                d.orient = d.data.area_title === "Oregon" ? "right" : d.orient;
+                d.orient = d.data.area_title === "Washington" ? "bottom" : d.orient;
 
                 return "label-g label--" + d.orient;
             })
@@ -314,7 +319,7 @@ class scatterplot {
                 return `translate(${x},${y})`;
             });
 
-        let pointerLength = 15;
+        let pointerLength = 10;
 
         labels.append("line")
             .attr("x1", d => {

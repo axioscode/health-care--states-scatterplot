@@ -34,6 +34,7 @@ function searchBar(vizConfig) {
         .insert("div", ":first-child")
         .attr("class", "header-search")
         .append("select")
+        .attr("id", "state-select")
         .attr("data-placeholder", placeholder)
         //.classed("chosen-select", true)
         .selectAll("option")
@@ -48,21 +49,29 @@ function searchBar(vizConfig) {
         })
         .attr('value', function(d) {
             return d.area_fips;
-        });
-
-    $(`${vizConfig.selector} select`).chosen({
-            no_results_text: noResultsText
         })
-        .change(function(e, params) {
-            let fips = params.selected;
-            vizConfig.context.setActive(fips, "dd");
 
-            // theTooltip.deactivate();
-            // theTooltip.activate(theConty, true);
+    d3.select("#state-select")
+        .on("change", function() {
+            let fips = d3.select(this).property('value');
+            vizConfig.context.setActive(fips, "dd");
         });
 
-    d3.select(".chosen-container.chosen-container-single")
-        .style("width", "95%")
+
+
+    // $(`${vizConfig.selector} select`).chosen({
+    //         no_results_text: noResultsText
+    //     })
+    //     .change(function(e, params) {
+    //         let fips = params.selected;
+    //         vizConfig.context.setActive(fips, "dd");
+
+    //         // theTooltip.deactivate();
+    //         // theTooltip.activate(theConty, true);
+    //     });
+
+    // d3.select(".chosen-container.chosen-container-single")
+    //     .style("width", "95%")
 }
 
 

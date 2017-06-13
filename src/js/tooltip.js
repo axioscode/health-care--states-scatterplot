@@ -4,7 +4,6 @@ const d3 = require("d3");
 let getQuad = (coords,size) => {
 
 	console.log(coords, size);
-	//console.log(coords, size);
 
 	let l = []
 
@@ -17,10 +16,6 @@ let getQuad = (coords,size) => {
 	if (coords[0] > size[0]/2) {
 		l.push('e');
 	}
-
-	// if (coords[0] < -size[0]/2) {
-	// 	l.push('w');
-	// }
 
 	if (coords[0] < size[0]/2) {
 		l.push('w');
@@ -64,7 +59,6 @@ let init = function(ttDiv) {
 
 		//console.log(region);
 
-		//area_title,pop2016,area_fips,hc2010,hc2015,ins2010,ins2015,hcChg,insChg,winner2016
 
 		theTooltip
 			.classed('tooltip-active',true)
@@ -83,7 +77,7 @@ let init = function(ttDiv) {
 								<span>${numberWithCommas(data.ins2015)}</span>
 							</div>
 							<div class="tt-row">
-								<strong>Change from 2010:</strong>
+								<strong>Change from 2013:</strong>
 								<span>${pctFormat(data.insChg)}</span>
 							</div>
 							<div class="tt-row with-rule subhead">
@@ -94,7 +88,7 @@ let init = function(ttDiv) {
 								<span>${numberWithCommas(data.hc2015)}</span>
 							</div>
 							<div class="tt-row">
-								<strong>Change from 2010:</strong>
+								<strong>Change from 2013:</strong>
 								<span>${pctFormat(data.hcChg)}</span>
 							</div>
 						</div>`
