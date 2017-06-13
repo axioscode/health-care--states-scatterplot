@@ -1,10 +1,10 @@
 'use strict';
 
 const d3 = require("d3");
-const $ = require("jQuery");
-window.$ = $;
-window.jQuery = $;
-require("chosen-js");
+// const $ = require("jQuery");
+// window.$ = $;
+// window.jQuery = $;
+// require("chosen-js");
 
 function searchBar(vizConfig) {
 
@@ -40,6 +40,7 @@ function searchBar(vizConfig) {
         .selectAll("option")
         .data([''].concat(vizConfig.vizData))
         .enter().append("option")
+        .attr("value", "default")
         .text(function(d) {
             if (d) {
                 return d.area_title;
@@ -48,7 +49,11 @@ function searchBar(vizConfig) {
             }
         })
         .attr('value', function(d) {
-            return d.area_fips;
+            if (d) {
+                return d.area_fips;
+            } else {
+                return "default";
+            }
         })
 
     d3.select("#state-select")

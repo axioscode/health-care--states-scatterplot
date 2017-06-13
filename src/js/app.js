@@ -4,8 +4,12 @@ import scatterplot from "./scatterplot";
 import searchBar from "./searchBar";
 import fipsLookup from "../data/fips.json";
 
+const analytics = require('./analytics.js');
+
 //var setupVisualsGoogleAnalytics = require('./analytics.js').setupVisualsGoogleAnalytics;
 //var trackEvent = require('./analytics.js').trackEvent;
+
+analytics.setupVisualsGoogleAnalytics();
 
 var pym = require('pym.js');
 
@@ -35,7 +39,7 @@ function main() {
                 return +d["pop2016"];
             }),
             onReady: function() {
-                console.log(this.data);
+                //console.log(this.data);
             }
         });
 
@@ -86,30 +90,8 @@ function main() {
 
 
 
-
-
-
-    // var statesScatterplot = new scatterplot({
-    //     element: document.querySelector(`.well.states .chart`),
-    //     dataUrl: `data/states_data.csv`,
-    //     party: "dem",
-    //     aspectHeight: 1,
-    //     xCat: "hcChg",
-    //     yCat: "insChg",
-    //     onReady: function() {
-    //         console.log(this.data);
-    //     }
-    // });
-
-
-
     d3.select(window).on("resize", d => {
-        // gopScatterplot.update();
-        // demScatterplot.update();
         statesScatterplot.update();
-
-        console.log(statesScatterplot.breakpoint);
-
 
     });
 

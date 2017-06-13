@@ -3,8 +3,6 @@ const d3 = require("d3");
 
 let getQuad = (coords,size) => {
 
-	console.log(coords, size);
-
 	let l = []
 
 	if (coords[1] > size[1]/2) {
@@ -51,14 +49,7 @@ let init = function(ttDiv) {
 
 	let position = function(data,coords,settings) {
 
-		//console.log(coords, settings);
-
 		let region = getQuad(coords,[(settings.width),(settings.height)])
-
-		//updateFields(data);
-
-		//console.log(region);
-
 
 		theTooltip
 			.classed('tooltip-active',true)

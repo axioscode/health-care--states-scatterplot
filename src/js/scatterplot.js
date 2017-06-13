@@ -189,8 +189,6 @@ class scatterplot {
 
         let _this = this;
 
-        console.log(this.data);
-
         let count = 0;
 
         this.dotsHere = this.plot.append("g")
@@ -388,6 +386,10 @@ class scatterplot {
         d3.select(`.dot`).classed("inactive", false);
         this.voronoiPolygons.classed("disabled", false);
         this.tooltip.classed("persistent", false);
+
+
+        d3.select("#state-select").property('value', 'default');
+
     }
 
 
