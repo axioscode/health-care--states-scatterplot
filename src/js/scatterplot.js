@@ -1,54 +1,54 @@
 let d3 = require("d3");
+let setTooltip = require('./tooltip.js');
+let util = require('./util.js');
 
 class scatterplot {
 
     constructor(opts) {
         this.element = opts.element;
-        this.dataUrl = opts.dataUrl;
+        this.data = opts.data;
         this.aspectHeight = opts.aspectHeight ? opts.aspectHeight : .6;
         this.onReady = opts.onReady;
         this.party = opts.party ? opts.party : null;
-
+        this.popDomain = opts.popDomain ? opts.popDomain : [500000, 39250017];
 
         this.xCat = opts.xCat;
-        this.yCat =  opts.yCat;
-        this.xDomain = [-.02, .2];
-        this.yDomain = [-.02, .2];
+        this.yCat = opts.yCat;
+        this.xDomain = [-.06, .25];
+        this.yDomain = [-.06, .2];
         this.xMax = this.xDomain[1];
         this.yMax = this.yDomain[1];
 
-        this._setData();
+        this.fipsLookup = opts.fipsLookup;
 
+        this._setData();
 
     }
 
 
     _setData() {
 
-        d3.csv(this.dataUrl, (error, data) => {
-
-            this.data = data;
-
-            this.popDomain = d3.extent(data, d=> {
-                return +d["pop2016"];
-            });
-
-            this.popDomain = [500000, 39250017];
-
-            this.update();
-
+        this.data.forEach(d => {
+            d.xVal = +d[this.xCat] > this.xMax ? (this.xMax + .05) : +d[this.xCat];
+            d.yVal = +d[this.yCat] > this.yMax ? (this.yMax + .05) : +d[this.yCat];
         });
+
+        this.update();
 
     }
 
     _setDimensions() {
         // define width, height and margin
+        this.breakpoint = window.innerWidth <= 375 ? "mobile" : window.innerWidth > 375 && window.innerWidth <= 621 ? "medium" : "large";
 
         this.mobile = window.innerWidth <= 375 ? true : false;
 
+        this.xDomain = this.mobile ? [-.06, .2] : this.xDomain;
+        this.aspectHeight = this.mobile ? 1 : this.aspectHeight;
+
         this.margin = {
             top: 30,
-            right: 30,
+            right: this.mobile ? 30 : 110,
             bottom: 45,
             left: 60
         };
@@ -67,10 +67,10 @@ class scatterplot {
         this.onReady();
     }
 
-
-
     _setScales() {
 
+
+        let circleRange = this.breakpoint === "mobile" ? [6, 30] : this.breakpoint === "medium" ? [10, 50] : [10, 80];
         let pctFormat = d3.format(".0%");
 
         // set the ranges
@@ -83,41 +83,58 @@ class scatterplot {
             .domain(this.yDomain);
 
         this.circleScale = d3.scaleSqrt()
-            .range([6,100])
+            .range(circleRange)
             .domain(this.popDomain);
 
         this.xAxis = d3.axisBottom(this.xScale)
-            .tickFormat(d=> {
+            .tickFormat(d => {
                 return d > 0 ? `+${pctFormat(d)}` : pctFormat(d);
             })
             .ticks(5)
             .tickSize(-this.height);
 
         this.yAxis = d3.axisLeft(this.yScale)
-            .tickFormat(d=> {
+            .tickFormat(d => {
                 return d > 0 ? `+${pctFormat(d)}` : pctFormat(d);
             })
             .ticks(5)
             .tickSize(-this.width);
 
+        this.voronoiDiagram = d3.voronoi()
+            .x(d => {
+                return this.xScale(d.xVal);
+            })
+            .y(d => {
+                return this.yScale(d.yVal);
+
+            })
+            .size([this.width, this.height])(this.data);
 
     }
 
     draw() {
 
-
-
         this.element.innerHTML = "";
 
+
+
         d3.select(this.element).classed("scatterplot", true)
-            .classed("is-mobile", this.mobile);
+            .classed("is-mobile", this.mobile)
+            .classed("has-tooltip", true);
 
         this.svg = d3.select(this.element).append('svg');
+
+        this.tooltip = d3.select(this.element).append("div")
+            .attr("class", "tooltip")
+            .on("click", d => {
+                this.setInactive();
+            });
+
+        this.setTooltip = setTooltip.init('.has-tooltip')
 
         //Set svg dimensions
         this.svg.attr('width', this.width + this.margin.left + this.margin.right);
         this.svg.attr('height', this.height + this.margin.top + this.margin.bottom);
-
 
         // create the chart group.
         this.plot = this.svg.append('g')
@@ -131,8 +148,8 @@ class scatterplot {
             .call(this.xAxis)
             .append("text")
             .classed("label", true)
-            .attr("x", this.width/2)
-            .attr("y",30)
+            .attr("x", this.width / 2)
+            .attr("y", 30)
             .style("text-anchor", "middle")
             .text("Health care jobs");
 
@@ -143,7 +160,7 @@ class scatterplot {
             .append("text")
             .classed("label", true)
             .attr("transform", "rotate(-90)")
-            .attr("x", -this.height/2)
+            .attr("x", -this.height / 2)
             .attr("y", -50)
             .attr("dy", "0.71em")
             .attr("text-anchor", "middle")
@@ -169,68 +186,206 @@ class scatterplot {
 
     drawDots() {
 
+        let _this = this;
+
+        console.log(this.data);
+
         let count = 0;
-        let nonSupressed = this.data.filter(d => {
 
-            if (d.hcChg === "na") {
-                count++;
-            }
-
-            return d.hcChg !== "na";
-        });
-
-        console.log(count);
+        this.dotsHere = this.plot.append("g")
+            .classed("dots-g", true);
 
         this.colors = {
                 dem: "#01356e",
                 gop: "#b1290a"
             }
             // Add the scatterplot
-        this.plot.selectAll(".dot")
+        this.dots = this.dotsHere.selectAll(".dot")
             .data(this.data)
             .enter().append("circle")
-            .attr("class", d=> {
+            .attr("class", d => {
                 return `dot ${d.winner2016}`;
             })
-            .attr("r", d=> {
-
-                console.log(this.circleScale( +d["pop2016"] / Math.PI ));
-
-                return this.circleScale( +d["pop2016"] / Math.PI ); 
+            .attr("fips", d => {
+                return d.area_fips;
+            })
+            .attr("r", d => {
+                return this.circleScale(+d["pop2016"] / Math.PI);
             })
             .attr("cx", d => {
-                let val = +d[this.xCat] > this.xMax ? (this.xMax + .05) : +d[this.xCat]; 
-                return this.xScale(val);
+                return this.xScale(d.xVal);
             })
             .attr("cy", d => {
-                let val = +d[this.yCat] > this.yMax ? (this.yMax + .05) : +d[this.yCat]; 
-                return this.yScale(val);
-            })
-            .style("opacity", .7)
-            .on("click", d=> {
-                console.log(d);
+                return this.yScale(d.yVal);
             });
+        //.style("opacity", .9);
 
-        this.plot.selectAll(".st-label")
-            .data(this.data)
-            .enter().append("text")
-            .attr("class", d=> {
-                return `st-label ${d.winner2016}`;
-            })
-            .attr("x", d => {
-                let val = +d[this.xCat] > this.xMax ? (this.xMax + .05) : +d[this.xCat]; 
-                return this.xScale(val);
-            })
-            .attr("y", d => {
-                let val = +d[this.yCat] > this.yMax ? (this.yMax + .05) : +d[this.yCat]; 
-                return this.yScale(val);
-            })
-            .attr("text-anchor", "middle")
-            .text(d=> {
-                return d.area_title;
-            });
+        // this.plot.selectAll(".st-label")
+        //     .data(this.data)
+        //     .enter().append("text")
+        //     .attr("class", d=> {
+        //         return `st-label ${d.winner2016}`;
+        //     })
+        //     .attr("x", d => {
+        //         let val = +d[this.xCat] > this.xMax ? (this.xMax + .05) : +d[this.xCat]; 
+        //         return this.xScale(val);
+        //     })
+        //     .attr("yc", d => {
+        //         let val = +d[this.yCat] > this.yMax ? (this.yMax + .05) : +d[this.yCat]; 
+        //         return this.yScale(val);
+        //     })
+        //     .attr("text-anchor", "middle")
+        //     .text(d=> {
+        //         return d.area_title;
+        //     });
+
+        this.drawVoronoi();
 
     }
+
+
+    drawVoronoi() {
+
+
+        let labelList = ["Colorado", "California", "Texas", "Nevada", "Washington", "District of Columbia", "Arkansas", "Maine", "Wisconsin", "Vermont", "Alaska", "Delaware"];
+
+        // draw the polygons
+        this.voronoiPolygons = this.plot.append('g')
+            .attr('class', 'voronoi-polygons');
+
+        let voronoiSeries = this.voronoiDiagram.polygons();
+
+        const binding = this.voronoiPolygons.selectAll('path').data(voronoiSeries);
+
+        binding.enter().append('path')
+            .style('fill', "#fff")
+            .style('stroke', 'tomato')
+            .attr("fips", d => {
+                return d.data.area_fips;
+            })
+            .style('opacity', 0)
+            .attr('d', d => {
+                return d ? `M${d.join('L')}Z` : ``;
+            })
+            .on("mouseover", d => {
+                this.setActive(d.data.area_fips);
+            })
+            .on("mouseout", d => {
+                this.setInactive(d.data.area_fips);
+            });
+
+
+        let labelSeries = voronoiSeries.filter(d => {
+            return labelList.indexOf(d.data.area_title) > -1;
+        });
+
+        let theLabels = this.plot.append("g")
+            .attr("class", "labels");
+
+        let labels = theLabels.selectAll("g.label-g")
+            .data(labelSeries)
+            .enter().append("g")
+            .attr("class", d => {
+
+                let x = this.xScale(d.data[this.xCat]);
+                let y = this.yScale(d.data[this.yCat]);
+
+                var centroid = d3.polygonCentroid(d),
+                    point = [x, y],
+                    angle = Math.round(Math.atan2(centroid[1] - point[1], centroid[0] - point[0]) / Math.PI * 2);
+
+                d.orient = angle === 0 ? "right" :
+                    angle === -1 ? "top" :
+                    angle === 1 ? "bottom" :
+                    "left";
+
+
+                return "label-g label--" + d.orient;
+            })
+            .classed("default", d => {
+                return d.default;
+            })
+            .attr("transform", d => {
+                let r = this.circleScale(+d.data["pop2016"] / Math.PI);
+                let xPos = this.xScale(d.data[this.xCat]);
+                let yPos = this.yScale(d.data[this.yCat]);
+                let x = d.orient === "left" ? xPos - r : d.orient === "right" ? xPos + r : xPos;
+                let y = d.orient === "top" ? yPos - r : d.orient === "bottom" ? yPos + r : yPos;
+                return `translate(${x},${y})`;
+            });
+
+        let pointerLength = 15;
+
+        labels.append("line")
+            .attr("x1", d => {
+                return d.orient === "right" ? 0 : d.orient === "left" ? 0 : 0;
+            })
+            .attr("y1", d => {
+                return d.orient === "bottom" ? 0 : d.orient === "top" ? 0 : 0;
+            })
+            .style("stroke", "#c2c2c2")
+            .style("stroke-width", 1)
+            .attr("x2", d => {
+                return d.orient === "right" ? pointerLength : d.orient === "left" ? -pointerLength : 0;
+            })
+            .attr("y2", d => {
+                return d.orient === "bottom" ? pointerLength : d.orient === "top" ? -pointerLength : 0;
+            });
+
+        labels.append("text")
+            .attr("dy", d => {
+                return d.orient === "left" || d.orient === "right" ? ".35em" : d.orient === "bottom" ? ".71em" : null;
+            })
+            .attr("x", d => {
+                return d.orient === "right" ? pointerLength : d.orient === "left" ? -pointerLength : null;
+            })
+            .attr("text-anchor", d => {
+                return d.orient === "right" ? "start" : d.orient === "left" ? "end" : "middle";
+            })
+            .attr("y", d => {
+                return d.orient === "bottom" ? pointerLength : d.orient === "top" ? -pointerLength : null;
+            })
+            .style("font-size", 10)
+            .text(d => {
+                let fips = d.data.area_fips;
+                let name = this.fipsLookup[fips].ap;
+                return `${name}`;
+            });
+
+
+    }
+
+
+    setActive(fips, dd) { //(tooltip, boolean) Check if triggered from dropdown
+
+        this.voronoiPolygons.classed("disabled", dd);
+        this.tooltip.classed("persistent", dd);
+
+        let datum = this.plot.selectAll(`.dot[fips='${fips}']`).datum();
+
+        let xPos = this.xScale(datum.xVal) + this.margin.left;
+        let yPos = this.yScale(datum.yVal) + this.margin.top;
+
+        this.setTooltip.position(datum, [xPos, yPos], {
+            width: this.width,
+            height: this.height
+        });
+
+        d3.select(`.dot[fips='${fips}']`).moveToFront();
+        this.plot.selectAll(".dot").classed("inactive", true);
+        d3.select(`.dot[fips='${fips}']`).classed("active", true).classed("inactive", false);
+    }
+
+    setInactive(fips) {
+        this.setTooltip.deposition();
+        d3.select(`.dot[fips='${fips}']`).moveToBack();
+        this.plot.selectAll(".dot").classed("active", false).classed("inactive", false);
+        d3.select(`.dot`).classed("inactive", false);
+        this.voronoiPolygons.classed("disabled", false);
+        this.tooltip.classed("persistent", false);
+    }
+
+
 }
 
 

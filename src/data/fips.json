@@ -1,0 +1,257 @@
+{
+    "10": {
+        "state": "Delaware",
+        "postal": "DE",
+        "ap": "Del."
+    },
+    "11": {
+        "state": "District of Columbia",
+        "postal": "DC",
+        "ap": "D.C."
+    },
+    "12": {
+        "state": "Florida",
+        "postal": "FL",
+        "ap": "Fla."
+    },
+    "13": {
+        "state": "Georgia",
+        "postal": "GA",
+        "ap": "Ga."
+    },
+    "15": {
+        "state": "Hawaii",
+        "postal": "HI",
+        "ap": "Hawaii"
+    },
+    "16": {
+        "state": "Idaho",
+        "postal": "ID",
+        "ap": "Idaho"
+    },
+    "17": {
+        "state": "Illinois",
+        "postal": "IL",
+        "ap": "Ill."
+    },
+    "18": {
+        "state": "Indiana",
+        "postal": "IN",
+        "ap": "Ind."
+    },
+    "19": {
+        "state": "Iowa",
+        "postal": "IA",
+        "ap": "Iowa"
+    },
+    "20": {
+        "state": "Kansas",
+        "postal": "KS",
+        "ap": "Kan."
+    },
+    "21": {
+        "state": "Kentucky",
+        "postal": "KY",
+        "ap": "Ky."
+    },
+    "22": {
+        "state": "Louisiana",
+        "postal": "LA",
+        "ap": "La."
+    },
+    "23": {
+        "state": "Maine",
+        "postal": "ME",
+        "ap": "Maine"
+    },
+    "24": {
+        "state": "Maryland",
+        "postal": "MD",
+        "ap": "Md."
+    },
+    "25": {
+        "state": "Massachusetts",
+        "postal": "MA",
+        "ap": "Mass."
+    },
+    "26": {
+        "state": "Michigan",
+        "postal": "MI",
+        "ap": "Mich."
+    },
+    "27": {
+        "state": "Minnesota",
+        "postal": "MN",
+        "ap": "Minn."
+    },
+    "28": {
+        "state": "Mississippi",
+        "postal": "MS",
+        "ap": "Miss."
+    },
+    "29": {
+        "state": "Missouri",
+        "postal": "MO",
+        "ap": "Mo."
+    },
+    "30": {
+        "state": "Montana",
+        "postal": "MT",
+        "ap": "Mont."
+    },
+    "31": {
+        "state": "Nebraska",
+        "postal": "NE",
+        "ap": "Neb."
+    },
+    "32": {
+        "state": "Nevada",
+        "postal": "NV",
+        "ap": "Nev."
+    },
+    "33": {
+        "state": "New Hampshire",
+        "postal": "NH",
+        "ap": "N.H."
+    },
+    "34": {
+        "state": "New Jersey",
+        "postal": "NJ",
+        "ap": "N.J."
+    },
+    "35": {
+        "state": "New Mexico",
+        "postal": "NM",
+        "ap": "N.M."
+    },
+    "36": {
+        "state": "New York",
+        "postal": "NY",
+        "ap": "N.Y."
+    },
+    "37": {
+        "state": "North Carolina",
+        "postal": "NC",
+        "ap": "N.C."
+    },
+    "38": {
+        "state": "North Dakota",
+        "postal": "ND",
+        "ap": "N.D."
+    },
+    "39": {
+        "state": "Ohio",
+        "postal": "OH",
+        "ap": "Ohio"
+    },
+    "40": {
+        "state": "Oklahoma",
+        "postal": "OK",
+        "ap": "Okla."
+    },
+    "41": {
+        "state": "Oregon",
+        "postal": "OR",
+        "ap": "Ore."
+    },
+    "42": {
+        "state": "Pennsylvania",
+        "postal": "PA",
+        "ap": "Pa."
+    },
+    "44": {
+        "state": "Rhode Island",
+        "postal": "RI",
+        "ap": "R.I."
+    },
+    "45": {
+        "state": "South Carolina",
+        "postal": "SC",
+        "ap": "S.C."
+    },
+    "46": {
+        "state": "South Dakota",
+        "postal": "SD",
+        "ap": "S.D."
+    },
+    "47": {
+        "state": "Tennessee",
+        "postal": "TN",
+        "ap": "Tenn."
+    },
+    "48": {
+        "state": "Texas",
+        "postal": "TX",
+        "ap": "Texas"
+    },
+    "49": {
+        "state": "Utah",
+        "postal": "UT",
+        "ap": "Utah"
+    },
+    "50": {
+        "state": "Vermont",
+        "postal": "VT",
+        "ap": "Vt."
+    },
+    "51": {
+        "state": "Virginia",
+        "postal": "VA",
+        "ap": "Va."
+    },
+    "53": {
+        "state": "Washington",
+        "postal": "WA",
+        "ap": "Wash."
+    },
+    "54": {
+        "state": "West Virginia",
+        "postal": "WV",
+        "ap": "W.Va."
+    },
+    "55": {
+        "state": "Wisconsin",
+        "postal": "WI",
+        "ap": "Wis."
+    },
+    "56": {
+        "state": "Wyoming",
+        "postal": "WY",
+        "ap": "Wyo."
+    },
+    "01": {
+        "state": "Alabama",
+        "postal": "AL",
+        "ap": "Ala."
+    },
+    "02": {
+        "state": "Alaska",
+        "postal": "AK",
+        "ap": "Alaska"
+    },
+    "04": {
+        "state": "Arizona",
+        "postal": "AZ",
+        "ap": "Ariz."
+    },
+    "05": {
+        "state": "Arkansas",
+        "postal": "AR",
+        "ap": "Ark."
+    },
+    "06": {
+        "state": "California",
+        "postal": "CA",
+        "ap": "Calif."
+    },
+    "08": {
+        "state": "Colorado",
+        "postal": "CO",
+        "ap": "Colo."
+    },
+    "09": {
+        "state": "Connecticut",
+        "postal": "CT",
+        "ap": "Conn."
+    }
+}

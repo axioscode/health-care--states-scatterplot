@@ -1,0 +1,85 @@
+
+
+.header-search {
+  padding-top: 10px;
+  width: 100%;
+  margin: 0 auto;
+  max-width: 300px;
+}
+
+/*.map-header-key { text-align: left }*/
+
+.header-search {
+  width: 100%;
+  //max-width: 260px;
+  //float: left;
+}
+
+
+
+.chosen-container {
+  display: block;
+  margin: 0 auto;
+  font-family: $sans;
+  .chosen-results {
+    color: #4a4a4a;
+    font-size: 13px;
+  }
+}
+
+.chosen-container-single .chosen-single,
+.chosen-container .chosen-container-single .chosen-container-active .chosen-with-drop {
+  background: #fff;
+  background-image: none !important;
+  box-shadow: none;
+  border: solid 1px #dcdcdc;
+  border-radius: 3px;
+  span {
+    color: #4a4a4a;
+    font-size: 13px;
+  }
+}
+
+.chosen-container-active.chosen-with-drop .chosen-single {
+  border-bottom: 0;
+  border: solid 1px #dcdcdc;
+}
+
+.chosen-container-single .chosen-single { height: 33px }
+.chosen-container-single .chosen-single span { line-height: 33px }
+
+.chosen-drop {
+  background: #fff;
+  box-shadow: none !important;
+  border: solid 1px #dcdcdc;
+  border-radius: 0 0 3px 3px;
+}
+
+.chosen-container-active.chosen-with-drop .chosen-drop {
+  border: solid 1px #dcdcdc;
+  border-top: 0;
+}
+
+.chosen-container-single .chosen-single div {
+  width: 24px;
+}
+
+.chosen-container .chosen-results li.highlighted {
+  background-image: none;
+  background: #ffe9d5;
+  color: #4a4a4a;
+}
+
+.chosen-container-single .chosen-single div b {
+  background: url('https://graphics.axios.com/2017-02-21-trucking-jobs-choropleth/img/down-arrow.svg') 0 0 no-repeat !important;
+  background-image: url('https://graphics.axios.com/2017-02-21-trucking-jobs-choropleth/img/down-arrow.svg') !important;
+  background-position: 0 !important;
+  background-size: 12px !important;
+}
+
+.chosen-container-active.chosen-with-drop .chosen-single div b {
+  background: url('https://graphics.axios.com/2017-02-21-trucking-jobs-choropleth/img/up-arrow.svg') 0 0 no-repeat !important;
+  background-image: url('https://graphics.axios.com/2017-02-21-trucking-jobs-choropleth/img/up-arrow.svg') !important;
+  background-position: 0 !important;
+  background-size: 12px !important;
+}

@@ -1,19 +1,29 @@
 @import 'feta';
+@import '_chosen-custom';
+@import '_tooltip';
 
 // div {
 // 	outline: 1px solid pink;
 // }
 
+// svg {
+// 	outline: 1px solid limegreen;
+// }
+
 $dem-fill: rgba(0, 78, 137, .5);
 $dem-stroke: rgba(0, 78, 137, 1);
+$dem-fill-active: rgba(0, 78, 137, 1);
 
 $gop-fill: rgba(186, 47, 14, .5);
 $gop-stroke: rgba(186, 47, 14, 1);
+$gop-fill-active: rgba(186, 47, 14, 1);
 
 
 #content-main {
-	max-width: 800px;
 	margin: 0 auto;
+	display: inline-block;
+	width: 100%;
+	text-align: center;
 }
 
 h2.all-head {
@@ -35,8 +45,10 @@ p.sub-head {
 
 .well {
 	width: 100%;
-	float: left;
-	margin-top: 24px;
+	max-width: 700px;
+	display: inline-block;
+	margin: 0 auto;
+	position: relative;
 
 	p {
 		text-align: center;
@@ -46,9 +58,38 @@ p.sub-head {
 	}
 }
 
+.key {
+	position: absolute;
+	right: 0;
+	top: 30px;
+
+	img {
+		width: 100px;
+		display: none;
+	}
+
+	img.key-lg {
+		display: block;
+	}
+	
+
+}
+
+.key-test {
+	circle {
+		stroke: #a4a4a4;
+		stroke-width: 1;
+		fill: none;
+	}
+}
+
+
+
 .chart {
 	
-	width: 80%;
+	width: 100%;
+	float: left;
+	position: relative;
 
 	.st-label {
 		fill: #4a4a4a;
@@ -58,11 +99,21 @@ p.sub-head {
 
 	.dot {
 		stroke-width: 1;
+		opacity: .7;
+
+		&.inactive {
+			opacity: .1;
+		}
 
 		&.dem {
 			//fill: #01356e;
 			fill: $dem-fill;
 			stroke: $dem-stroke;
+
+			&.active {
+				fill: $dem-fill-active;
+				stroke: #000,
+			}
 			
 		}
 
@@ -70,6 +121,11 @@ p.sub-head {
 			//fill: #b1290a;
 			fill: $gop-fill;
 			stroke: $gop-stroke;
+
+			&.active {
+				fill: $gop-fill-active;
+				stroke: #000,
+			}
 		}
 	}
 
@@ -85,8 +141,8 @@ p.sub-head {
 		}
 
 		line, path {
-			stroke: #c2c2c2;
-			stroke-width: 1;
+			stroke: #c2c2c2 !important;
+			stroke-width: .5;
 		}
 
 		.domain {
@@ -102,10 +158,77 @@ p.sub-head {
 	}
 
 	.zero-line {
-		stroke: #4a4a4a;
-		stroke-width: 1;
+		stroke: #c2c2c2 !important;
+		stroke-width: 2 !important;
 	}
 
 
+	.voronoi-polygons {
+		&.disabled {
+			pointer-events: none;
+		}
+	}
+
+
+	.labels {
+
+		text {
+			paint-order: stroke;
+			stroke: white;
+			stroke-width: 4px;
+			stroke-linecap: round;
+			stroke-linejoin: round;
+		}
+
+		
+	}
 
 }
+
+
+
+@media(max-width: 621px) {
+	.key {
+		img.key-lg, img.key-mobile {
+			display: none;
+		}
+
+		img.key-md {
+			display: block;
+		}
+	}
+}
+
+
+
+@media(max-width: 375px) {
+
+	.chart svg {
+		.labels {
+			display: none;
+		}
+	}
+
+
+	.key {
+		display: inline-block;
+		position: relative;
+		top: 0;
+		left: 0;
+
+		img.key-lg, img.key-md {
+			display: none;
+		}
+
+		img.key-mobile {
+			display: block;
+			width: 300px;
+		}
+	}
+}
+
+
+
+
+
+
