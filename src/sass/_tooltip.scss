@@ -167,13 +167,23 @@
 }
 
 
+@media(max-width: 375px) {
+	body {
+		.tooltip-inner {
+			min-width: 148px !important;
+			width: 148px !important;
+		}
+	}
+}
+
 
 
 .tooltip-inner {
 	width: 160px;
 
 	@media(max-width: 450px) {
-		width: 160px;
+		width: 140px;
+		min-width: 140px;
 	}
 
 	.tt-header {

@@ -59,7 +59,7 @@ function searchBar(vizConfig) {
     d3.select("#state-select")
         .on("change", function() {
             let fips = d3.select(this).property('value');
-            vizConfig.context.setActive(fips, "dd");
+            vizConfig.context.setActive(fips, true);
         });
 
 

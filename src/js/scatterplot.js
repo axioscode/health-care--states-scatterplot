@@ -11,6 +11,7 @@ class scatterplot {
         this.onReady = opts.onReady;
         this.party = opts.party ? opts.party : null;
         this.popDomain = opts.popDomain ? opts.popDomain : [500000, 39250017];
+        //this.isPersistent = false;
 
         this.xCat = opts.xCat;
         this.yCat = opts.yCat;
@@ -29,8 +30,8 @@ class scatterplot {
     _setData() {
 
         this.data.forEach(d => {
-            d.xVal = +d[this.xCat] > this.xMax ? (this.xMax + .05) : +d[this.xCat];
-            d.yVal = +d[this.yCat] > this.yMax ? (this.yMax + .05) : +d[this.yCat];
+            d.xVal = +d[this.xCat];
+            d.yVal = +d[this.yCat];
         });
 
         this.update();
@@ -41,14 +42,14 @@ class scatterplot {
         // define width, height and margin
         this.breakpoint = window.innerWidth <= 375 ? "mobile" : window.innerWidth > 375 && window.innerWidth <= 621 ? "medium" : "large";
 
-        this.mobile = window.innerWidth <= 375 ? true : false;
+        this.isMobile = window.innerWidth <= 375 ? true : false;
 
-        this.xDomain = this.mobile ? [-.015, .15] : this.xDomain;
-        this.aspectHeight = this.aspectHeight;
+        this.xDomain = this.isMobile ? [-.015, .12] : this.xDomain;
+        this.aspectHeight = this.isMobile ? 1 : this.aspectHeight;
 
         this.margin = {
             top: 30,
-            right: this.mobile ? 30 : 110,
+            right: this.isMobile ? 30 : 110,
             bottom: 45,
             left: 60
         };
@@ -120,7 +121,6 @@ class scatterplot {
         this.element.innerHTML = "";
 
         d3.select(this.element).classed("scatterplot", true)
-            .classed("is-mobile", this.mobile)
             .classed("has-tooltip", true);
 
         this.svg = d3.select(this.element).append('svg');
@@ -268,10 +268,13 @@ class scatterplot {
                 return d ? `M${d.join('L')}Z` : ``;
             })
             .on("mouseover", d => {
-                this.setActive(d.data.area_fips, this.mobile);
+                this.setActive(d.data.area_fips, this.isMobile);
             })
             .on("mouseout", d => {
-                this.setInactive(d.data.area_fips);
+                if (!this.isMobile) {
+                    this.setInactive(d.data.area_fips);
+                }
+                
             });
 
 
@@ -363,6 +366,7 @@ class scatterplot {
 
         this.voronoiPolygons.classed("disabled", dd);
         this.tooltip.classed("persistent", dd);
+        //this.isPersistent = dd;
 
         let datum = this.plot.selectAll(`.dot[fips='${fips}']`).datum();
 
@@ -380,10 +384,13 @@ class scatterplot {
     }
 
     setInactive(fips) {
+
         this.setTooltip.deposition();
+        // this.isPersistent = false;
         d3.select(`.dot[fips='${fips}']`).moveToBack();
         this.plot.selectAll(".dot").classed("active", false).classed("inactive", false);
         d3.select(`.dot`).classed("inactive", false);
+        
         this.voronoiPolygons.classed("disabled", false);
         this.tooltip.classed("persistent", false);
 
